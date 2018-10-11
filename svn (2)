@@ -1,0 +1,44 @@
+#!/bin/bash
+# chkconfig: - 85 15
+
+svn=/usr/bin/svnserve
+repopath=/usr/local/repo
+. /etc/rc.d/init.d/functions
+
+start() {
+  $svn -d -r $repopath
+  [ $? = 0 ] && echo "svn start"	
+}
+
+stop() {
+  killall $svn
+  [ $? = 0 ] && echo "svn stop"
+}
+
+restart() {
+  stop &> /dev/null
+  [ $? = 0 ] && echo "svn stop" || echo "svn down"
+  start
+}
+
+a_status() {
+  status $svn
+}
+
+case $1 in 
+   start)
+	start;;
+   stop)
+	stop;;
+   restart)
+	restart;;
+   status)
+	a_status;;
+   *)
+	echo "service $svn (start|stop|restart|status)"
+esac
+
+
+	
+	
+
